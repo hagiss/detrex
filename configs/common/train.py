@@ -8,12 +8,12 @@ train = dict(
     # The total training iterations
     max_iter=15000,
     # options for Automatic Mixed Precision
-    amp=dict(enabled=True),
+    amp=dict(enabled=False),
     # options for DistributedDataParallel
     ddp=dict(
         broadcast_buffers=False,
         find_unused_parameters=False,
-        fp16_compression=True,
+        fp16_compression=False,
     ),
     # options for Gradient Clipping during training
     clip_grad=dict(
