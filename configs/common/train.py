@@ -13,7 +13,7 @@ train = dict(
     ddp=dict(
         broadcast_buffers=False,
         find_unused_parameters=False,
-        fp16_compression=False,
+        fp16_compression=True,
     ),
     # options for Gradient Clipping during training
     clip_grad=dict(
