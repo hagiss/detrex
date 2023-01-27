@@ -60,7 +60,7 @@ class MultiheadAttention(nn.Module):
             embed_dim=embed_dim,
             num_heads=num_heads,
             dropout=attn_drop,
-            # batch_first=batch_first,
+            batch_first=batch_first,
             **kwargs,
         )
 
@@ -127,9 +127,9 @@ class MultiheadAttention(nn.Module):
         if key_pos is not None:
             key = key + key_pos
 
-        query = query.permute(1, 0, 2)
-        key = key.permute(1, 0, 2)
-        value = value.permute(1, 0, 2)
+        # query = query.permute(1, 0, 2)
+        # key = key.permute(1, 0, 2)
+        # value = value.permute(1, 0, 2)
 
         out = self.attn(
             query=query,
