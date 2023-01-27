@@ -16,13 +16,13 @@ train.output_dir = "./output/coco"
 train.max_iter = 15000
 
 # run evaluation every 5000 iters
-train.eval_period = 3000
+train.eval_period = 16000
 
 # log training infomation every 20 iters
 train.log_period = 100
 
 # save checkpoint every 5000 iters
-train.checkpointer.period = 2000
+train.checkpointer.period = 1500
 
 # gradient clipping for training
 train.clip_grad.enabled = True

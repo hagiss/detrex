@@ -267,12 +267,38 @@ class Trainer(SimpleTrainer):
 
 
 def do_test(cfg, model):
-    if "evaluator" in cfg.dataloader:
-        ret = inference_on_dataset(
-            model, instantiate(cfg.dataloader.test), instantiate(cfg.dataloader.evaluator)
-        )
-        print_csv_format(ret)
-        return ret
+    # if "evaluator" in cfg.dataloader:
+    #     ret = inference_on_dataset(
+    #         model, instantiate(cfg.dataloader.test), instantiate(cfg.dataloader.evaluator)
+    #     )
+    #     print_csv_format(ret)
+    #     return ret
+    prediction_strings = []
+    file_names = []
+
+    test_loader = instantiate(cfg.dataloader.test)
+
+    for data in tqdm(test_loader):
+        print(data)
+        outputs = model(data)['instances']
+        if torch.cuda.is_available():
+            torch.cuda.synchronize()
+        targets = outputs.pred_classes.cpu().tolist()
+        boxes = [i.cpu().detach().numpy() for i in outputs.pred_boxes]
+        scores = outputs.scores.cpu().tolist()
+
+        for target, box, score in zip(targets, boxes, scores):
+            prediction_string += (str(target) + ' ' + str(score) + ' ' + str(box[0]) + ' '
+                                  + str(box[1]) + ' ' + str(box[2]) + ' ' + str(box[3]) + ' ')
+
+        prediction_strings.append(prediction_string)
+        file_names.append(data['file_name'].replace('../dataset/', ''))
+
+    submission = pd.DataFrame()
+    submission['PredictionString'] = prediction_strings
+    submission['image_id'] = file_names
+    submission.to_csv(os.path.join(cfg.output_dir, f'submission_det2.csv'), index=None)
+    submission.head()
 
 
 def do_train(args, cfg):
