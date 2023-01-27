@@ -296,6 +296,9 @@ def do_train(args, cfg):
                 checkpointer (dict)
                 ddp (dict)
     """
+    for i in cfg.model.keys():
+        print(i, cfg.model[i])
+
     cfg.model.roi_heads.num_classes = 10
     cfg.model.roi_heads.batch_size_per_image = 128
 
