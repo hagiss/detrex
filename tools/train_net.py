@@ -364,10 +364,10 @@ def do_train(args, cfg):
 
     # -----------------------------------------------------------------------------
 
-    # train_loader = instantiate(cfg.dataloader.train)
-    train_loader = build_detection_train_loader(
-        cfg, mapper=MyMapper, sampler=None
-    )
+    train_loader = instantiate(cfg.dataloader.train)
+    # train_loader = build_detection_train_loader(
+    #     cfg, mapper=MyMapper, sampler=None
+    # )
 
     model = create_ddp_model(model, **cfg.train.ddp)
 
