@@ -54,13 +54,13 @@ logger = logging.getLogger("detrex")
 
 # Register Dataset
 try:
-    register_coco_instances('coco_trash_train', {}, '/data/dataset/upstage/dataset/train.json', '/data/dataset/upstage/dataset/')
+    register_coco_instances('coco_trash_train', {}, '/data/home/user/Data/upstage/dataset/train.json', '/data/home/user/Data/upstage/dataset/')
 except AssertionError:
     print("aaaa")
     pass
 
 try:
-    register_coco_instances('coco_trash_test', {}, '/data/dataset/upstage/dataset/test.json', '/data/dataset/upstage/dataset/')
+    register_coco_instances('coco_trash_test', {}, '/data/home/user/Data/upstage/dataset/test.json', '/data/home/user/Data/upstage/dataset/')
 except AssertionError:
     print("aaaa")
     pass
@@ -296,8 +296,8 @@ def do_train(args, cfg):
                 checkpointer (dict)
                 ddp (dict)
     """
-    for i in cfg.model.keys():
-        print(i, cfg.model[i])
+    # for i in cfg.model.keys():
+    #     print(i, cfg.model[i])
 
     # cfg.model.roi_heads.num_classes = 10
     # cfg.model.roi_heads.batch_size_per_image = 128
