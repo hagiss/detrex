@@ -16,13 +16,11 @@ from detrex.data import DetrDatasetMapper
 try:
     register_coco_instances('coco_trash_train', {}, '/data/home/user/Data/upstage/dataset/train.json', '/data/home/user/Data/upstage/dataset/')
 except AssertionError:
-    print("aaaa")
     pass
 
 try:
     register_coco_instances('coco_trash_test', {}, '/data/home/user/Data/upstage/dataset/test.json', '/data/home/user/Data/upstage/dataset/')
 except AssertionError:
-    print("aaaa")
     pass
 
 MetadataCatalog.get('coco_trash_train').thing_classes = ["General trash", "Paper", "Paper pack", "Metal",

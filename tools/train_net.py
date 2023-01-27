@@ -56,13 +56,11 @@ logger = logging.getLogger("detrex")
 try:
     register_coco_instances('coco_trash_train', {}, '/data/home/user/Data/upstage/dataset/train.json', '/data/home/user/Data/upstage/dataset/')
 except AssertionError:
-    print("aaaa")
     pass
 
 try:
     register_coco_instances('coco_trash_test', {}, '/data/home/user/Data/upstage/dataset/test.json', '/data/home/user/Data/upstage/dataset/')
 except AssertionError:
-    print("aaaa")
     pass
 
 MetadataCatalog.get('coco_trash_train').thing_classes = ["General trash", "Paper", "Paper pack", "Metal",
@@ -296,13 +294,7 @@ def do_train(args, cfg):
                 checkpointer (dict)
                 ddp (dict)
     """
-    # for i in cfg.model.keys():
-    #     print(i, cfg.model[i])
-
-    # cfg.model.roi_heads.num_classes = 10
-    # cfg.model.roi_heads.batch_size_per_image = 128
     cfg.model.num_classes = 10
-    # cfg.model.num_queries = 600
     model = instantiate(cfg.model)
     logger = logging.getLogger("detectron2")
     logger.info("Model:\n{}".format(model))
@@ -310,60 +302,6 @@ def do_train(args, cfg):
 
     cfg.optimizer.params.model = model
     optim = instantiate(cfg.optimizer)
-
-    # cfg.dataloader.train.dataset.names = "coco_trash_train"
-    # cfg.dataloader.test.dataset.names = "coco_trash_test"
-    # print(cfg.dataloader.train)
-    # -----------------------------------------------------------------------------
-    # Dataset
-    # -----------------------------------------------------------------------------
-    cfg.DATASETS = CN()
-    # List of the dataset names for training. Must be registered in DatasetCatalog
-    # Samples from these datasets will be merged and used as one dataset.
-    cfg.DATASETS.TRAIN = ('coco_trash_train',)
-    # List of the pre-computed proposal files for training, which must be consistent
-    # with datasets listed in DATASETS.TRAIN.
-    cfg.DATASETS.PROPOSAL_FILES_TRAIN = ()
-    # Number of top scoring precomputed proposals to keep for training
-    cfg.DATASETS.PRECOMPUTED_PROPOSAL_TOPK_TRAIN = 2000
-    # List of the dataset names for testing. Must be registered in DatasetCatalog
-    cfg.DATASETS.TEST = ('coco_trash_test',)
-    # List of the pre-computed proposal files for test, which must be consistent
-    # with datasets listed in DATASETS.TEST.
-    cfg.DATASETS.PROPOSAL_FILES_TEST = ()
-    # Number of top scoring precomputed proposals to keep for test
-    cfg.DATASETS.PRECOMPUTED_PROPOSAL_TOPK_TEST = 1000
-
-    # -----------------------------------------------------------------------------
-    # DataLoader
-    # -----------------------------------------------------------------------------
-    cfg.DATALOADER = CN()
-    # Number of data loading threads
-    cfg.DATALOADER.NUM_WORKERS = 4
-    # If True, each batch should contain only images for which the aspect ratio
-    # is compatible. This groups portrait images together, and landscape images
-    # are not batched with portrait images.
-    cfg.DATALOADER.ASPECT_RATIO_GROUPING = True
-    # Options: TrainingSampler, RepeatFactorTrainingSampler
-    cfg.DATALOADER.SAMPLER_TRAIN = "TrainingSampler"
-    # Repeat threshold for RepeatFactorTrainingSampler
-    cfg.DATALOADER.REPEAT_THRESHOLD = 0.0
-    # Tf True, when working on datasets that have instance annotations, the
-    # training dataloader will filter out images without associated annotations
-    cfg.DATALOADER.FILTER_EMPTY_ANNOTATIONS = True
-
-    cfg.SOLVER = CN()
-    cfg.SOLVER.IMS_PER_BATCH = 2
-
-    cfg.MODEL = CN()
-    cfg.MODEL.LOAD_PROPOSALS = False
-    cfg.MODEL.MASK_ON = False
-    cfg.MODEL.KEYPOINT_ON = False
-
-    cfg.MODEL.ROI_KEYPOINT_HEAD = CN()
-    cfg.MODEL.ROI_KEYPOINT_HEAD.MIN_KEYPOINTS_PER_IMAGE = 1
-
-    # -----------------------------------------------------------------------------
 
     train_loader = instantiate(cfg.dataloader.train)
     # train_loader = build_detection_train_loader(
@@ -430,6 +368,8 @@ def main(args):
     cfg = LazyConfig.load(args.config_file)
     cfg = LazyConfig.apply_overrides(cfg, args.opts)
     default_setup(cfg, args)
+
+    cfg.model.num_classes = 10
 
     if args.eval_only:
         model = instantiate(cfg.model)
