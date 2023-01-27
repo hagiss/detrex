@@ -14,13 +14,13 @@ from detrex.data import DetrDatasetMapper
 
 # Register Dataset
 try:
-    register_coco_instances('coco_trash_train', {}, '/data/dataset/upstage/dataset/train.json', '/data/dataset/upstage/dataset/')
+    register_coco_instances('coco_trash_train', {}, '/data/home/user/Data/upstage/dataset/train.json', '/data/home/user/Data/upstage/dataset/')
 except AssertionError:
     print("aaaa")
     pass
 
 try:
-    register_coco_instances('coco_trash_test', {}, '/data/dataset/upstage/dataset/test.json', '/data/dataset/upstage/dataset/')
+    register_coco_instances('coco_trash_test', {}, '/data/home/user/Data/upstage/dataset/test.json', '/data/home/user/Data/upstage/dataset/')
 except AssertionError:
     print("aaaa")
     pass
