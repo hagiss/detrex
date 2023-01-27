@@ -8,7 +8,7 @@ train = dict(
     # The total training iterations
     max_iter=15000,
     # options for Automatic Mixed Precision
-    amp=dict(enabled=False),
+    amp=dict(enabled=True),
     # options for DistributedDataParallel
     ddp=dict(
         broadcast_buffers=False,
