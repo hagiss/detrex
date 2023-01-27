@@ -60,7 +60,7 @@ class MultiheadAttention(nn.Module):
             embed_dim=embed_dim,
             num_heads=num_heads,
             dropout=attn_drop,
-            batch_first=batch_first,
+            # batch_first=batch_first,
             **kwargs,
         )
 
