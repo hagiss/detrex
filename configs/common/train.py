@@ -6,7 +6,7 @@ train = dict(
     # The initialize checkpoint to be loaded
     init_checkpoint="",
     # The total training iterations
-    max_iter=90000,
+    max_iter=15000,
     # options for Automatic Mixed Precision
     amp=dict(enabled=False),
     # options for DistributedDataParallel
@@ -28,9 +28,9 @@ train = dict(
     # options for PeriodicCheckpointer, which saves a model checkpoint
     # after every `checkpointer.period` iterations,
     # and only `checkpointer.max_to_keep` number of checkpoint will be kept.
-    checkpointer=dict(period=5000, max_to_keep=100),
+    checkpointer=dict(period=3000, max_to_keep=100),
     # Run evaluation after every `eval_period` number of iterations
-    eval_period=5000,
+    eval_period=3000,
     # Output log to console every `log_period` number of iterations.
     log_period=20,
     # wandb logging params

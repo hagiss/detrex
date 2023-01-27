@@ -13,16 +13,16 @@ train.init_checkpoint = "detectron2://ImageNetPretrained/MAE/mae_pretrain_vit_ba
 train.output_dir = "./output/dino_vitdet_base_12ep"
 
 # max training iterations
-train.max_iter = 90000
+train.max_iter = 15000
 
 # run evaluation every 5000 iters
-train.eval_period = 5000
+train.eval_period = 3000
 
 # log training infomation every 20 iters
 train.log_period = 20
 
 # save checkpoint every 5000 iters
-train.checkpointer.period = 5000
+train.checkpointer.period = 3000
 
 # gradient clipping for training
 train.clip_grad.enabled = True
@@ -40,7 +40,7 @@ optimizer.weight_decay = 1e-4
 optimizer.params.lr_factor_func = lambda module_name: 0.1 if "backbone" in module_name else 1
 
 # modify dataloader config
-dataloader.train.num_workers = 16
+dataloader.train.num_workers = 4
 
 # please notice that this is total batch size.
 # surpose you're using 4 gpus for training and the batch size for
