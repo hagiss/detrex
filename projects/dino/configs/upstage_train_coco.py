@@ -4,7 +4,7 @@ from .models.dino_vitdet import model
 # get default config
 dataloader = get_config("common/data/coco_detr.py").dataloader
 optimizer = get_config("common/optim.py").AdamW
-lr_multiplier = get_config("common/coco_schedule.py").lr_multiplier_12ep
+lr_multiplier = get_config("common/coco_schedule.py").lr_multiplier_upstage
 train = get_config("common/train.py").train
 
 
