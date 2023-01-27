@@ -24,6 +24,7 @@ from typing import Optional
 import torch
 import torch.nn as nn
 
+warnings.filterwarnings("UserWarning")
 
 class MultiheadAttention(nn.Module):
     """A wrapper for ``torch.nn.MultiheadAttention``
