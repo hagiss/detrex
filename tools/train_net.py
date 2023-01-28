@@ -403,7 +403,8 @@ def main(args):
         model = instantiate(cfg.model)
         model.to(cfg.train.device)
         model = create_ddp_model(model)
-        DetectionCheckpointer(model).load(cfg.train.init_checkpoint)
+        DetectionCheckpointer(model).resume_or_load(cfg.train.init_checkpoint, resume=False)
+        # checkpointer.resume_or_load(cfg.train.init_checkpoint, resume=args.resume)
         do_test(cfg, model)
     else:
         do_train(args, cfg)
