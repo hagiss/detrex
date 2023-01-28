@@ -159,10 +159,10 @@ def do_test(cfg, model):
     test_loader = instantiate(cfg.dataloader.test)
 
     for data in tqdm(test_loader):
-        # data = data[0]
+        data = data[0]
         prediction_string = ''
-        # print("data", data)
-        outputs = model(data)[0]['instances']
+        print("data", data)
+        outputs = model(data)['instances']
         # print("outputs", outputs)
         if torch.cuda.is_available():
             torch.cuda.synchronize()
