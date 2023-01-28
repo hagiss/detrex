@@ -1,6 +1,7 @@
 from omegaconf import OmegaConf
 import copy
 import torch
+import array
 
 from detectron2.data import detection_utils as utils
 import detectron2.data.transforms as T
