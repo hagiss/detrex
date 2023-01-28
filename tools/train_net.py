@@ -296,7 +296,7 @@ def do_test(cfg, model):
             prediction_string += (str(target) + ' ' + str(score) + ' ' + str(box[0]) + ' '
                                   + str(box[1]) + ' ' + str(box[2]) + ' ' + str(box[3]) + ' ')
         prediction_strings.append(prediction_string)
-        file_names.append(data['file_name'].replace('../dataset/', ''))
+        file_names.append(data[0]['file_name'].replace('../dataset/', ''))
 
     submission = pd.DataFrame()
     submission['PredictionString'] = prediction_strings
