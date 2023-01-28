@@ -174,8 +174,8 @@ def do_test(cfg, model):
             prediction_string += (str(target) + ' ' + str(score) + ' ' + str(box[0]) + ' '
                                   + str(box[1]) + ' ' + str(box[2]) + ' ' + str(box[3]) + ' ')
         prediction_strings.append(prediction_string)
-        print(data[0]['file_name'].replace('../dataset/', ''))
-        file_names.append(data[0]['file_name'].replace('../dataset/', ''))
+        # print(data[0]['file_name'].replace('/data/home/user/Data/upstage/dataset/', ''))
+        file_names.append(data[0]['file_name'].replace('/data/home/user/Data/upstage/dataset/', ''))
 
     submission = pd.DataFrame()
     submission['PredictionString'] = prediction_strings
