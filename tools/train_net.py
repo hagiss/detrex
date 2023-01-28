@@ -18,6 +18,7 @@ import sys
 import time
 import torch
 import copy
+from tqdm import tqdm
 from torch.nn.parallel import DataParallel, DistributedDataParallel
 
 from detectron2.checkpoint import DetectionCheckpointer
@@ -273,14 +274,16 @@ def do_test(cfg, model):
     #     )
     #     print_csv_format(ret)
     #     return ret
+    model.eval()
     prediction_strings = []
     file_names = []
 
     test_loader = instantiate(cfg.dataloader.test)
 
     for data in tqdm(test_loader):
-        print(data)
+        print("data", data)
         outputs = model(data)['instances']
+        print("outputs", outputs)
         if torch.cuda.is_available():
             torch.cuda.synchronize()
         targets = outputs.pred_classes.cpu().tolist()
@@ -320,7 +323,6 @@ def do_train(args, cfg):
                 checkpointer (dict)
                 ddp (dict)
     """
-    cfg.model.num_classes = 10
     model = instantiate(cfg.model)
     logger = logging.getLogger("detectron2")
     logger.info("Model:\n{}".format(model))
@@ -402,7 +404,7 @@ def main(args):
         model.to(cfg.train.device)
         model = create_ddp_model(model)
         DetectionCheckpointer(model).load(cfg.train.init_checkpoint)
-        print(do_test(cfg, model))
+        do_test(cfg, model)
     else:
         do_train(args, cfg)
 
