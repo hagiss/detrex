@@ -9,9 +9,9 @@ train = get_config("common/train.py").train
 
 
 # modify training config
-# train.init_checkpoint = "../checkpoints/dino_vitdet_base_4scale_50ep.pth"
+train.init_checkpoint = "../checkpoints/dino_vitdet_base_4scale_50ep.pth"
 # train.init_checkpoint = "../checkpoints/model_final.pth"
-train.init_checkpoint = "./output/coco/model_0014999.pth"
+# train.init_checkpoint = "./output/coco/model_0014999.pth"
 train.output_dir = "./output/coco"
 
 # max training iterations
