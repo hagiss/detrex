@@ -281,8 +281,10 @@ def do_test(cfg, model):
     test_loader = instantiate(cfg.dataloader.test)
 
     for data in tqdm(test_loader):
-        print("data", data)
-        outputs = model(data)['instances']
+        data = data[0]
+        prediction_string = ''
+        # print("data", data)
+        outputs = model(data['image'])['instances']
         print("outputs", outputs)
         if torch.cuda.is_available():
             torch.cuda.synchronize()
@@ -293,7 +295,6 @@ def do_test(cfg, model):
         for target, box, score in zip(targets, boxes, scores):
             prediction_string += (str(target) + ' ' + str(score) + ' ' + str(box[0]) + ' '
                                   + str(box[1]) + ' ' + str(box[2]) + ' ' + str(box[3]) + ' ')
-
         prediction_strings.append(prediction_string)
         file_names.append(data['file_name'].replace('../dataset/', ''))
 
