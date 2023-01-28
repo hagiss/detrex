@@ -302,7 +302,7 @@ def do_test(cfg, model):
     submission = pd.DataFrame()
     submission['PredictionString'] = prediction_strings
     submission['image_id'] = file_names
-    submission.to_csv(os.path.join(cfg.output_dir, f'submission_det2.csv'), index=None)
+    submission.to_csv(os.path.join(cfg.train.output_dir, f'submission_det2.csv'), index=None)
     submission.head()
 
 
