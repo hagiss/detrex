@@ -62,7 +62,7 @@ def TestMapper(dataset_dict):
     dataset_dict = copy.deepcopy(dataset_dict)
     image = utils.read_image(dataset_dict['file_name'], format='BGR')
 
-    dataset_dict['image'] = torch.tensor(copy.deepcopy(image))
+    dataset_dict['image'] = torch.as_tensor(image.transpose(2,0,1).astype('float32'))
 
     return dataset_dict
 
