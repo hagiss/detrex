@@ -283,8 +283,8 @@ def do_test(cfg, model):
     for data in tqdm(test_loader):
         data = data[0]
         prediction_string = ''
-        # print("data", data)
-        outputs = model(data['image'])['instances']
+        print("data", data)
+        outputs = model(data['image'])
         print("outputs", outputs)
         if torch.cuda.is_available():
             torch.cuda.synchronize()
