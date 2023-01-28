@@ -162,7 +162,7 @@ def do_test(cfg, model):
         # data = data[0]
         prediction_string = ''
         print("data", data)
-        outputs = model(data)
+        outputs = model(data)['instances']
         print("outputs", outputs)
         if torch.cuda.is_available():
             torch.cuda.synchronize()
