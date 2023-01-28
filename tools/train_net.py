@@ -281,7 +281,7 @@ def do_test(cfg, model):
     test_loader = instantiate(cfg.dataloader.test)
 
     for data in tqdm(test_loader):
-        data = data[0]
+        # data = data[0]
         prediction_string = ''
         # print("data", data)
         outputs = model(data)
