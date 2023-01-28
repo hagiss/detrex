@@ -284,8 +284,8 @@ def do_test(cfg, model):
         # data = data[0]
         prediction_string = ''
         # print("data", data)
-        outputs = model(data)
-        print("outputs", outputs['instances'])
+        outputs = model(data)[0]['instances']
+        # print("outputs", outputs)
         if torch.cuda.is_available():
             torch.cuda.synchronize()
         targets = outputs.pred_classes.cpu().tolist()
