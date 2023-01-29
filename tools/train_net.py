@@ -324,28 +324,28 @@ def main(args):
     cfg.model.num_classes = 10
 
     if args.eval_only:
-        # model = instantiate(cfg.model)
-        # model.to(cfg.train.device)
-        # model = create_ddp_model(model)
-        # DetectionCheckpointer(model).resume_or_load(cfg.train.init_checkpoint, resume=False)
-        # do_test(cfg, model)
+        model = instantiate(cfg.model)
+        model.to(cfg.train.device)
+        model = create_ddp_model(model)
+        DetectionCheckpointer(model).resume_or_load(cfg.train.init_checkpoint, resume=False)
+        do_test(cfg, model)
         ###########################################################
-        model1 = instantiate(cfg.model)
-        model1.to(cfg.train.device)
-        model1 = create_ddp_model(model1)
-        DetectionCheckpointer(model1).resume_or_load(cfg.train.init_checkpoint1, resume=False)
-
-        model2 = instantiate(cfg.model)
-        model2.to(cfg.train.device)
-        model2 = create_ddp_model(model2)
-        DetectionCheckpointer(model2).resume_or_load(cfg.train.init_checkpoint1, resume=False)
-
-        model3 = instantiate(cfg.model)
-        model3.to(cfg.train.device)
-        model3 = create_ddp_model(model3)
-        DetectionCheckpointer(model3).resume_or_load(cfg.train.init_checkpoint3, resume=False)
-
-        do_test_ensemble(cfg, model1, model2, model3)
+        # model1 = instantiate(cfg.model)
+        # model1.to(cfg.train.device)
+        # model1 = create_ddp_model(model1)
+        # DetectionCheckpointer(model1).resume_or_load(cfg.train.init_checkpoint1, resume=False)
+        #
+        # model2 = instantiate(cfg.model)
+        # model2.to(cfg.train.device)
+        # model2 = create_ddp_model(model2)
+        # DetectionCheckpointer(model2).resume_or_load(cfg.train.init_checkpoint1, resume=False)
+        #
+        # model3 = instantiate(cfg.model)
+        # model3.to(cfg.train.device)
+        # model3 = create_ddp_model(model3)
+        # DetectionCheckpointer(model3).resume_or_load(cfg.train.init_checkpoint3, resume=False)
+        #
+        # do_test_ensemble(cfg, model1, model2, model3)
     else:
         do_train(args, cfg)
 
