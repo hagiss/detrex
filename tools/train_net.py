@@ -203,9 +203,10 @@ def do_test_ensemble(cfg, model1, model2, model3):
         # data = data[0]
         prediction_string = ''
         # print("data", data)
-        outputs1 = model1(data)[0]['instances']
-        outputs2 = model2(data)[0]['instances']
-        outputs3 = model3(data)[0]['instances']
+        with torch.no_grad():
+            outputs1 = model1(data)[0]['instances']
+            outputs2 = model2(data)[0]['instances']
+            outputs3 = model3(data)[0]['instances']
         # print("outputs", outputs)
         if torch.cuda.is_available():
             torch.cuda.synchronize()

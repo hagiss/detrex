@@ -120,7 +120,6 @@ dataloader.test = L(build_detection_test_loader)(
     #     img_format="RGB",
     # ),
     mapper=TestMapper,
-    total_batch_size=1,
     num_workers=2,
 )
 
