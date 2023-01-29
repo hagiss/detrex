@@ -209,9 +209,9 @@ def do_test_ensemble(cfg, model1, model2, model3):
         # print("outputs", outputs)
         if torch.cuda.is_available():
             torch.cuda.synchronize()
-        targets = (outputs1.pred_classes.cpu().tolist() + outputs2.pred_classes.cpu().tolist() + outputs3.pred_classes.cpu().tolist()) / 3
+        targets = [(i + j + k) / 3 for i, j, k in zip(outputs1.pred_classes.cpu().tolist(), outputs2.pred_classes.cpu().tolist(), outputs3.pred_classes.cpu().tolist())]
         boxes = [(i.cpu().detach().numpy() + j.cpu().detach().numpy() + k.cpu().detach().numpy()) / 3 for i, j, k in zip(outputs1.pred_boxes, outputs2.pred_boxes ,outputs3.pred_boxes)]
-        scores = (outputs1.scores.cpu().tolist() + outputs2.scores.cpu().tolist() + outputs3.scores.cpu().tolist()) / 3
+        scores = [(i + j + k) / 3 for i, j, k in zip(outputs1.scores.cpu().tolist(), outputs2.scores.cpu().tolist(), outputs3.scores.cpu().tolist())]
 
         for target, box, score in zip(targets, boxes, scores):
             prediction_string += (str(target) + ' ' + str(score) + ' ' + str(box[0]) + ' '
