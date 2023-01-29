@@ -1,5 +1,6 @@
 from detrex.config import get_config
 from .models.dino_vitdet import model
+from detectron2.config import LazyCall as L
 
 # get default config
 dataloader = get_config("common/data/coco_detr.py").dataloader
