@@ -184,6 +184,49 @@ def do_test(cfg, model):
     submission.head()
 
 
+def do_test_ensemble(cfg, model1, model2, model3):
+    # if "evaluator" in cfg.dataloader:
+    #     ret = inference_on_dataset(
+    #         model, instantiate(cfg.dataloader.test), instantiate(cfg.dataloader.evaluator)
+    #     )
+    #     print_csv_format(ret)
+    #     return ret
+    model1.eval()
+    model2.eval()
+    model3.eval()
+    prediction_strings = []
+    file_names = []
+
+    test_loader = instantiate(cfg.dataloader.test)
+
+    for data in tqdm(test_loader):
+        # data = data[0]
+        prediction_string = ''
+        # print("data", data)
+        outputs1 = model1(data)[0]['instances']
+        outputs2 = model2(data)[0]['instances']
+        outputs3 = model3(data)[0]['instances']
+        # print("outputs", outputs)
+        if torch.cuda.is_available():
+            torch.cuda.synchronize()
+        targets = (outputs1.pred_classes.cpu().tolist() + outputs2.pred_classes.cpu().tolist() + outputs3.pred_classes.cpu().tolist()) / 3
+        boxes = [(i.cpu().detach().numpy() + j.cpu().detach().numpy() + k.cpu().detach().numpy()) / 3 for i, j, k in zip(outputs1.pred_boxes, outputs2.pred_boxes ,outputs3.pred_boxes)]
+        scores = (outputs1.scores.cpu().tolist() + outputs2.scores.cpu().tolist() + outputs3.scores.cpu().tolist()) / 3
+
+        for target, box, score in zip(targets, boxes, scores):
+            prediction_string += (str(target) + ' ' + str(score) + ' ' + str(box[0]) + ' '
+                                  + str(box[1]) + ' ' + str(box[2]) + ' ' + str(box[3]) + ' ')
+        prediction_strings.append(prediction_string)
+        # print(data[0]['file_name'].replace('/data/home/user/Data/upstage/dataset/', ''))
+        file_names.append(data[0]['file_name'].replace('/data/home/user/Data/upstage/dataset/', ''))
+
+    submission = pd.DataFrame()
+    submission['PredictionString'] = prediction_strings
+    submission['image_id'] = file_names
+    submission.to_csv(os.path.join(cfg.train.output_dir, f'submission_det2.csv'), index=None)
+    submission.head()
+
+
 def do_train(args, cfg):
     """
     Args:
@@ -280,12 +323,28 @@ def main(args):
     cfg.model.num_classes = 10
 
     if args.eval_only:
-        model = instantiate(cfg.model)
-        model.to(cfg.train.device)
-        model = create_ddp_model(model)
-        DetectionCheckpointer(model).resume_or_load(cfg.train.init_checkpoint, resume=False)
-        # checkpointer.resume_or_load(cfg.train.init_checkpoint, resume=args.resume)
-        do_test(cfg, model)
+        # model = instantiate(cfg.model)
+        # model.to(cfg.train.device)
+        # model = create_ddp_model(model)
+        # DetectionCheckpointer(model).resume_or_load(cfg.train.init_checkpoint, resume=False)
+        # do_test(cfg, model)
+        ###########################################################
+        model1 = instantiate(cfg.model)
+        model1.to(cfg.train.device)
+        model1 = create_ddp_model(model1)
+        DetectionCheckpointer(model1).resume_or_load(cfg.train.init_checkpoint1, resume=False)
+
+        model2 = instantiate(cfg.model)
+        model2.to(cfg.train.device)
+        model2 = create_ddp_model(model2)
+        DetectionCheckpointer(model2).resume_or_load(cfg.train.init_checkpoint1, resume=False)
+
+        model3 = instantiate(cfg.model)
+        model3.to(cfg.train.device)
+        model3 = create_ddp_model(model3)
+        DetectionCheckpointer(model3).resume_or_load(cfg.train.init_checkpoint3, resume=False)
+
+        do_test_ensemble(cfg, model1, model2, model3)
     else:
         do_train(args, cfg)
 
