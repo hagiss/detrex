@@ -101,7 +101,7 @@ dataloader.train = L(build_detection_train_loader)(
     #     img_format="RGB",
     # ),
     mapper=MyMapper,
-    total_batch_size=4,
+    total_batch_size=16,
     num_workers=4,
 )
 
@@ -120,7 +120,8 @@ dataloader.test = L(build_detection_test_loader)(
     #     img_format="RGB",
     # ),
     mapper=TestMapper,
-    num_workers=4,
+    total_batch_size=1,
+    num_workers=2,
 )
 
 dataloader.evaluator = L(COCOEvaluator)(
