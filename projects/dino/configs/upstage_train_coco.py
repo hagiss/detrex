@@ -14,13 +14,13 @@ train = get_config("common/train.py").train
 # modify training config
 # train.init_checkpoint = "../checkpoints/dino_vitdet_large_4scale_50ep.pth"
 # train.init_checkpoint = "../checkpoints/model_final.pth"
-train.init_checkpoint1 = "./output/coco_large/model_0019999.pth"
-train.init_checkpoint2 = "./output/coco_large/model_0018999.pth"
+train.init_checkpoint = "./output/coco_large/model_0019999.pth"
+# train.init_checkpoint2 = "./output/coco_large/model_0018999.pth"
 # train.init_checkpoint3 = "./output/coco2/model_0011999.pth"
 train.output_dir = "./output/coco_large"
 
 # max training iterations
-train.max_iter = 20000
+train.max_iter = 5000
 
 # run evaluation every 5000 iters
 train.eval_period = 21000
@@ -29,7 +29,7 @@ train.eval_period = 21000
 train.log_period = 100
 
 # save checkpoint every 5000 iters
-train.checkpointer.period = 1000
+train.checkpointer.period = 500
 
 # gradient clipping for training
 train.clip_grad.enabled = True
@@ -71,8 +71,9 @@ model.backbone.net.window_block_indexes = (
 lr_multiplier = L(WarmupParamScheduler)(
     scheduler=L(MultiStepParamScheduler)(
         values=[1.0, 0.1],
-        milestones=[17000, 20000],
+        milestones=[0, 5000],
     ),
-    warmup_length=250 / train.max_iter,
+    # warmup_length=250 / train.max_iter,
+    warmup_length=0,
     warmup_factor=0.001,
 )
