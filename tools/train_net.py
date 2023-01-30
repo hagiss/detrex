@@ -141,7 +141,7 @@ class Trainer(SimpleTrainer):
 
         # update ema
         m = 0.996
-        for current_params, ma_params in zip(self.model.parameters(), self.ema_model.parameters):
+        for current_params, ma_params in zip(self.model.parameters(), self.ema_model.parameters()):
             old_weight, up_weight = ma_params.data, current_params.data
             ma_params.data = old_weight * m + (1 - m) * up_weight
 
