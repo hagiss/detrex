@@ -14,10 +14,10 @@ train = get_config("common/train.py").train
 # modify training config
 # train.init_checkpoint = "../checkpoints/dino_vitdet_large_4scale_50ep.pth"
 # train.init_checkpoint = "../checkpoints/model_final.pth"
-train.init_checkpoint = "./output/coco_large/model_0003999.pth"
-# train.init_checkpoint2 = "./output/coco_large/model_0018999.pth"
-# train.init_checkpoint3 = "./output/coco2/model_0011999.pth"
-train.output_dir = "./output/coco_large"
+train.init_checkpoint1 = "./output/coco_large/model_0017999.pth"
+train.init_checkpoint2 = "./output/coco_large/model_0018999.pth"
+train.init_checkpoint3 = "./output/coco_large/model_0019999.pth"
+train.output_dir = "./output/coco"
 
 # max training iterations
 train.max_iter = 2000
