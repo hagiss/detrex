@@ -1,8 +1,8 @@
 import torch
 import random
 import numpy as np
-from detectron2.augmentations.box_level_augs.color_augs import color_aug_func
-from detectron2.augmentations.box_level_augs.geometric_augs import geometric_aug_func
+from augmentations.box_level_augs.color_augs import color_aug_func
+from augmentations.box_level_augs.geometric_augs import geometric_aug_func
 
 pixel_mean = [103.530, 116.280, 123.675]
 

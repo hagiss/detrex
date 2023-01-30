@@ -5,8 +5,8 @@ import random
 import numpy as np
 from detectron2.structures.boxes import Boxes
 from detectron2.structures.masks import PolygonMasks
-from detectron2.augmentations.image_level_augs.scale_jitter import scale_jitter
-from detectron2.augmentations.vis import _vis
+from augmentations.image_level_augs.scale_jitter import scale_jitter
+from augmentations.vis import _vis
 
 
 class Zoom_out(object):

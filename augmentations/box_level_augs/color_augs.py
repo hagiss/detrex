@@ -1,7 +1,7 @@
 import random
 import torch
 import torch.nn.functional as F
-from detectron2.augmentations.box_level_augs.gaussian_maps import _merge_gaussian
+from augmentations.box_level_augs.gaussian_maps import _merge_gaussian
 
 _MAX_LEVEL = 10.0
 

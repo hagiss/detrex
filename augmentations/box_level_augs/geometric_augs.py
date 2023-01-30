@@ -3,7 +3,7 @@ import random
 import torch
 import torchvision.transforms as transforms
 import numpy as np
-from detectron2.augmentations.box_level_augs.gaussian_maps import _gaussian_map
+from augmentations.box_level_augs.gaussian_maps import _gaussian_map
 from detectron2.structures.boxes import Boxes
 from detectron2.structures.masks import PolygonMasks
 

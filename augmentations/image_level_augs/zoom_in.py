@@ -2,7 +2,7 @@ import copy
 import torch
 import numpy as np
 from detectron2.structures.masks import PolygonMasks
-from detectron2.augmentations.image_level_augs.scale_jitter import scale_jitter, _crop_boxes
+from augmentations.image_level_augs.scale_jitter import scale_jitter, _crop_boxes
 
 
 class Zoom_in(object):
@@ -51,7 +51,7 @@ class Zoom_in(object):
                         poly_new[0::2] = poly_new[0::2] - crop_y
                         poly_new[1::2] = poly_new[1::2] - crop_x
                         poly_out.append(poly_new)
-                     else:
+                    else:
                         poly_out.append(poly)
                 if len(cropped_bbox) == 0:
                     cropped_masks.append(poly_out)

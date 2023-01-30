@@ -1,10 +1,10 @@
 import copy
 import torch
 import torchvision
-from detectron2.augmentations.image_level_augs.img_level_augs import Img_augs
-from detectron2.augmentations.box_level_augs.box_level_augs import Box_augs
-from detectron2.augmentations.box_level_augs.color_augs import color_aug_func
-from detectron2.augmentations.box_level_augs.geometric_augs import geometric_aug_func
+from augmentations.image_level_augs.img_level_augs import Img_augs
+from augmentations.box_level_augs.box_level_augs import Box_augs
+from augmentations.box_level_augs.color_augs import color_aug_func
+from augmentations.box_level_augs.geometric_augs import geometric_aug_func
 from detectron2.utils.comm import get_world_size
 
 

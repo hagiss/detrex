@@ -1,8 +1,8 @@
 import random
 import numpy as np
-from detectron2.augmentations.image_level_augs.zoom_in import Zoom_in
-from detectron2.augmentations.image_level_augs.zoom_out import Zoom_out
-from detectron2.augmentations.image_level_augs.scale_jitter import scale_jitter
+from augmentations.image_level_augs.zoom_in import Zoom_in
+from augmentations.image_level_augs.zoom_out import Zoom_out
+from augmentations.image_level_augs.scale_jitter import scale_jitter
 
 
 class Img_augs(object):
