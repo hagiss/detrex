@@ -382,7 +382,7 @@ class DINO(nn.Module):
             query_embeds, attn_mask, dn_meta, images)
 
 
-    def forward_with_feature(self, multi_level_feats,
+    def forward_with_feature(self, batched_inputs, multi_level_feats,
             multi_level_masks,
             multi_level_position_embeddings,
             query_embeds,
