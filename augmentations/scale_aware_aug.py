@@ -58,7 +58,7 @@ class SA_Aug(object):
 
         dataset_dict['instances']._image_size = tensor_out.shape[1:]
         dataset_dict['instances']._fields = target_out
-        print(tensor_out.shape)
+        # print(tensor_out.shape)
         dataset_dict['image'] = tensor_out #.transpose(2, 0, 1)
 
         return dataset_dict
