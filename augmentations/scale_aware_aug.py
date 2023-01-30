@@ -49,10 +49,10 @@ class SA_Aug(object):
             self.num_workers += 1
 
     def __call__(self, dataset_dict):
-        tensor = dataset_dict['image']
-        target = dataset_dict['instances']._fields
+        tensor_out = dataset_dict['image']
+        target_out = dataset_dict['instances']._fields
         iteration = self.count // self.batch_size * self.num_workers
-        tensor_out, target_out = self.img_augs(tensor, target)
+        # tensor_out, target_out = self.img_augs(tensor, target)
         tensor_out, target_out = self.box_augs(tensor_out, target_out, iteration=self.start_iter + iteration)
         self.count += 1
 
