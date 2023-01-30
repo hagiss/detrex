@@ -221,7 +221,7 @@ def do_test_ensemble(cfg, model1, model2):
         if torch.cuda.is_available():
             torch.cuda.synchronize()
         targets = outputs.pred_classes.cpu().tolist()
-        boxes = outputs.pred_boxes.cpu().detach().numpy()
+        boxes = [i.cpu().detach().numpy() for i in outputs.pred_boxes]
         scores = outputs.scores.cpu().tolist()
 
         for target, box, score in zip(targets, boxes, scores):
