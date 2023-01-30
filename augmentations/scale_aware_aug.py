@@ -10,7 +10,7 @@ from detectron2.utils.comm import get_world_size
 
 class SA_Aug(object):
     def __init__(self):
-        autoaug_list = (6, 9, 5, 3, 3, 4, 2, 4, 4, 4, 5, 2, 4, 1, 4, 2, 6, 4, 2, 2, 2, 6, 2, 2, 2, 0, 5, 1, 3, 0, 8, 5, 2, 8, 7, 5, 1, 3, 3, 3)
+        autoaug_list = (6, 9, 0, 3, 3, 4, 2, 4, 4, 4, 5, 2, 4, 1, 4, 2, 6, 4, 2, 2, 2, 6, 2, 2, 2, 0, 5, 1, 3, 0, 8, 5, 2, 8, 7, 5, 1, 3, 3, 3)
         num_policies = 5
         max_iters = 20000
         scale_splits = [2048, 10240, 51200]
