@@ -224,8 +224,8 @@ def do_test_ensemble(cfg, model1, model2, model3):
             # print("pos", multi_level_position_embeddings1)
             # print("query", query_embeds1)
 
-            multi_level_feats = [(i + j + k) / 2 for i, j, k in zip(multi_level_feats1, multi_level_feats2, multi_level_feats3)]
-            multi_level_position_embeddings = [(i + j + k) / 2 for i, j, k in zip(multi_level_position_embeddings1, multi_level_position_embeddings2, multi_level_position_embeddings3)]
+            multi_level_feats = [(i + j + k) / 3 for i, j, k in zip(multi_level_feats1, multi_level_feats2, multi_level_feats3)]
+            multi_level_position_embeddings = [(i + j + k) / 3 for i, j, k in zip(multi_level_position_embeddings1, multi_level_position_embeddings2, multi_level_position_embeddings3)]
             # query_embeds = [(i+j)/2 for i, j in zip(query_embeds1, query_embeds2)]
             outputs = model2.forward_with_feature(data, multi_level_feats, multi_level_masks, multi_level_position_embeddings, query_embeds, attn_mask, dn_meta, images)[0]['instances']
             # outputs3 = model3(data)[0]['instances']
