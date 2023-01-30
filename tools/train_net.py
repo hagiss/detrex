@@ -162,7 +162,8 @@ def do_test(cfg, model):
         # data = data[0]
         prediction_string = ''
         # print("data", data)
-        outputs = model(data)[0]['instances']
+        with torch.no_grad():
+            outputs = model(data)[0]['instances']
         # print("outputs", outputs)
         if torch.cuda.is_available():
             torch.cuda.synchronize()
