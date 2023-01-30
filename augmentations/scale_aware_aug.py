@@ -56,7 +56,7 @@ class SA_Aug(object):
         tensor_out, target_out = self.box_augs(tensor_out, target_out, iteration=self.start_iter + iteration)
         self.count += 1
 
-        dataset_dict['instances']._image_size = tensor_out.shape[1:]
+        dataset_dict['instances']._image_size = tensor_out.shape[:2]
         dataset_dict['instances']._fields = target_out
         # print(tensor_out.shape)
         dataset_dict['image'] = tensor_out #.transpose(2, 0, 1)

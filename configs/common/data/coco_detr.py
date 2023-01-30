@@ -46,7 +46,7 @@ def MyMapper(dataset_dict):
     image, transforms = T.apply_transform_gens(transform_list, image)
 
     dataset_dict['image'] = torch.as_tensor(image.transpose(2,0,1).astype('float32'))
-    print(dataset_dict['image'].shape)
+    # print(dataset_dict['image'].shape)
     annos = [
         utils.transform_instance_annotations(obj, transforms, image.shape[:2])
         for obj in dataset_dict.pop('annotations')
@@ -57,7 +57,7 @@ def MyMapper(dataset_dict):
     dataset_dict['instances'] = utils.filter_empty_instances(instances)
 
     dataset_dict = aug(dataset_dict)
-    print(dataset_dict['image'].shape)
+    # print(dataset_dict['image'].shape)
 
     return dataset_dict
 
