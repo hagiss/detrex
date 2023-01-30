@@ -17,7 +17,6 @@ class Zoom_in(object):
         classes = target['gt_classes']
 
         h, w = tensor.shape[1], tensor.shape[2]
-        print(h, w)
         new_h, new_w = int(h * self.ratio), int(w * self.ratio)
 
         use_mask = ('gt_masks' in target)

@@ -45,15 +45,15 @@ def MyMapper(dataset_dict):
 
     image, transforms = T.apply_transform_gens(transform_list, image)
 
-    dataset_dict['image'] = torch.as_tensor(image.astype('float32'))
+    dataset_dict['image'] = torch.as_tensor(image.transpose(2,0,1).astype('float32'))
 
     annos = [
-        utils.transform_instance_annotations(obj, transforms, image.shape[1:])
+        utils.transform_instance_annotations(obj, transforms, image.shape[:2])
         for obj in dataset_dict.pop('annotations')
         if obj.get('iscrowd', 0) == 0
     ]
 
-    instances = utils.annotations_to_instances(annos, image.shape[1:])
+    instances = utils.annotations_to_instances(annos, image.shape[:2])
     dataset_dict['instances'] = utils.filter_empty_instances(instances)
 
     dataset_dict = aug(dataset_dict)
