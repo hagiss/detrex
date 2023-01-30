@@ -379,14 +379,14 @@ class DINO(nn.Module):
         return (multi_level_feats,
             multi_level_masks,
             multi_level_position_embeddings,
-            query_embeds, attn_mask, dn_meta)
+            query_embeds, attn_mask, dn_meta, images)
 
 
     def forward_with_feature(self, multi_level_feats,
             multi_level_masks,
             multi_level_position_embeddings,
             query_embeds,
-            attn_mask, dn_meta):
+            attn_mask, dn_meta, images):
         """Forward function of `DINO` which excepts a list of dict as inputs.
 
         Args:
