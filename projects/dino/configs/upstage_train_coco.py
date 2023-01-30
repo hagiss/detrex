@@ -70,8 +70,8 @@ model.backbone.net.window_block_indexes = (
 # use warmup lr scheduler
 lr_multiplier = L(WarmupParamScheduler)(
     scheduler=L(MultiStepParamScheduler)(
-        values=[1.0, 0.1],
-        milestones=[0, 5000],
+        values=[0.1],
+        milestones=[5000],
     ),
     # warmup_length=250 / train.max_iter,
     warmup_length=0,
