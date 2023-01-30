@@ -38,9 +38,9 @@ def MyMapper(dataset_dict):
     image = utils.read_image(dataset_dict['file_name'], format='BGR')
 
     transform_list = [
-        # T.RandomFlip(prob=0.5, horizontal=False, vertical=True),
-        # T.RandomBrightness(0.8, 1.8),
-        # T.RandomContrast(0.6, 1.3)
+        T.RandomFlip(prob=0.5, horizontal=False, vertical=True),
+        T.RandomBrightness(0.8, 1.8),
+        T.RandomContrast(0.6, 1.3)
     ]
 
     image, transforms = T.apply_transform_gens(transform_list, image)

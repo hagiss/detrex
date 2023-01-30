@@ -73,7 +73,7 @@ lr_multiplier = L(WarmupParamScheduler)(
         values=[1.0, 0.1],
         milestones=[17000, 20000],
     ),
-    # warmup_length=250 / train.max_iter,
-    warmup_length=0,
+    warmup_length=250 / train.max_iter,
+    # warmup_length=0,
     warmup_factor=0.001,
 )
