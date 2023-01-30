@@ -63,6 +63,7 @@ class Trainer(SimpleTrainer):
     def __init__(
         self,
         model,
+        ema_model,
         dataloader,
         optimizer,
         amp=False,
@@ -88,6 +89,10 @@ class Trainer(SimpleTrainer):
 
         # gradient clip hyper-params
         self.clip_grad_params = clip_grad_params
+
+        self.ema_model = ema_model
+        for p in self.ema_model.parameters():
+            p.requires_grad = False
 
     def run_step(self):
         """
@@ -133,6 +138,12 @@ class Trainer(SimpleTrainer):
             if self.clip_grad_params is not None:
                 self.clip_grads(self.model.parameters())
             self.optimizer.step()
+
+        # update ema
+        m = 0.996
+        for current_params, ma_params in zip(self.model.parameters(), self.ema_model.parameters):
+            old_weight, up_weight = ma_params.data, current_params.data
+            ma_params.data = old_weight * m + (1 - m) * up_weight
 
         self._write_metrics(loss_dict, data_time)
 
@@ -258,9 +269,11 @@ def do_train(args, cfg):
                 ddp (dict)
     """
     model = instantiate(cfg.model)
+    ema_model = instantiate(cfg.model)
     logger = logging.getLogger("detectron2")
     logger.info("Model:\n{}".format(model))
     model.to(cfg.train.device)
+    ema_model.to(cfg.train.device)
 
     cfg.optimizer.params.model = model
     optim = instantiate(cfg.optimizer)
@@ -271,17 +284,20 @@ def do_train(args, cfg):
     # )
 
     model = create_ddp_model(model, **cfg.train.ddp)
+    ema_model = create_ddp_model(ema_model, **cfg.train.ddp)
 
     trainer = Trainer(
         model=model,
+        ema_model=ema_model,
         dataloader=train_loader,
         optimizer=optim,
         amp=cfg.train.amp.enabled,
         clip_grad_params=cfg.train.clip_grad.params if cfg.train.clip_grad.enabled else None,
     )
 
+    DetectionCheckpointer(model).resume_or_load(cfg.train.init_checkpoint, resume=False)
     checkpointer = DetectionCheckpointer(
-        model,
+        ema_model,
         cfg.train.output_dir,
         trainer=trainer,
     )
