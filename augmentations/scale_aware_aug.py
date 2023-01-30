@@ -53,7 +53,7 @@ class SA_Aug(object):
         target = dataset_dict['instances']._fields
         iteration = self.count // self.batch_size * self.num_workers
         tensor_out, target_out = self.img_augs(tensor, target)
-        tensor_out, target_out = self.box_augs(tensor_out, target_out, iteration=self.start_iter + iteration)
+        # tensor_out, target_out = self.box_augs(tensor_out, target_out, iteration=self.start_iter + iteration)
         self.count += 1
 
         dataset_dict['instances']._image_size = tensor_out.shape[:2]
