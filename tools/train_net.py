@@ -296,10 +296,14 @@ def do_train(args, cfg):
         clip_grad_params=cfg.train.clip_grad.params if cfg.train.clip_grad.enabled else None,
     )
 
-    DetectionCheckpointer(model).resume_or_load(cfg.train.init_checkpoint, resume=False)
     checkpointer = DetectionCheckpointer(
-        ema_model,
+        model,
         cfg.train.output_dir,
+        trainer=trainer,
+    )
+    checkpointer_ema = DetectionCheckpointer(
+        ema_model,
+        cfg.train.output_dir + "_ema",
         trainer=trainer,
     )
 
@@ -334,6 +338,7 @@ def do_train(args, cfg):
     )
 
     checkpointer.resume_or_load(cfg.train.init_checkpoint, resume=args.resume)
+    checkpointer_ema.resume_or_load(cfg.train.init_checkpoint, resume=args.resume)
     if args.resume and checkpointer.has_checkpoint():
         # The checkpoint stores the training iteration that just finished, thus we start
         # at the next iteration
@@ -351,28 +356,28 @@ def main(args):
     cfg.model.num_classes = 10
 
     if args.eval_only:
-        # model = instantiate(cfg.model)
-        # model.to(cfg.train.device)
-        # model = create_ddp_model(model)
-        # DetectionCheckpointer(model).resume_or_load(cfg.train.init_checkpoint, resume=False)
-        # do_test(cfg, model)
+        model = instantiate(cfg.model)
+        model.to(cfg.train.device)
+        model = create_ddp_model(model)
+        DetectionCheckpointer(model).resume_or_load(cfg.train.init_checkpoint, resume=False)
+        do_test(cfg, model)
         ###########################################################
-        model1 = instantiate(cfg.model)
-        model1.to(cfg.train.device)
-        model1 = create_ddp_model(model1)
-        DetectionCheckpointer(model1).resume_or_load(cfg.train.init_checkpoint1, resume=False)
-
-        model2 = instantiate(cfg.model)
-        model2.to(cfg.train.device)
-        model2 = create_ddp_model(model2)
-        DetectionCheckpointer(model2).resume_or_load(cfg.train.init_checkpoint2, resume=False)
-
-        model3 = instantiate(cfg.model)
-        model3.to(cfg.train.device)
-        model3 = create_ddp_model(model3)
-        DetectionCheckpointer(model3).resume_or_load(cfg.train.init_checkpoint3, resume=False)
-
-        do_test_ensemble(cfg, model1, model2, model3)
+        # model1 = instantiate(cfg.model)
+        # model1.to(cfg.train.device)
+        # model1 = create_ddp_model(model1)
+        # DetectionCheckpointer(model1).resume_or_load(cfg.train.init_checkpoint1, resume=False)
+        #
+        # model2 = instantiate(cfg.model)
+        # model2.to(cfg.train.device)
+        # model2 = create_ddp_model(model2)
+        # DetectionCheckpointer(model2).resume_or_load(cfg.train.init_checkpoint2, resume=False)
+        #
+        # model3 = instantiate(cfg.model)
+        # model3.to(cfg.train.device)
+        # model3 = create_ddp_model(model3)
+        # DetectionCheckpointer(model3).resume_or_load(cfg.train.init_checkpoint3, resume=False)
+        #
+        # do_test_ensemble(cfg, model1, model2, model3)
     else:
         do_train(args, cfg)
 
