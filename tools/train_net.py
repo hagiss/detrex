@@ -185,7 +185,7 @@ def do_test(cfg, model):
     submission.head()
 
 
-def do_test_ensemble(cfg, model1, model2, model3):
+def do_test_ensemble(cfg, model1, model2):
     # if "evaluator" in cfg.dataloader:
     #     ret = inference_on_dataset(
     #         model, instantiate(cfg.dataloader.test), instantiate(cfg.dataloader.evaluator)
@@ -194,7 +194,7 @@ def do_test_ensemble(cfg, model1, model2, model3):
     #     return ret
     model1.eval()
     model2.eval()
-    model3.eval()
+    # model3.eval()
     prediction_strings = []
     file_names = []
 
@@ -205,15 +205,19 @@ def do_test_ensemble(cfg, model1, model2, model3):
         prediction_string = ''
         # print("data", data)
         with torch.no_grad():
-            outputs1 = model1(data)[0]['instances']
-            outputs2 = model2(data)[0]['instances']
-            outputs3 = model3(data)[0]['instances']
+            multi_level_feats1, multi_level_masks, multi_level_position_embeddings1, query_embeds1, attn_mask = model1.get_backbone_feature(data)
+            multi_level_feats2, _, multi_level_position_embeddings2, query_embeds2, _ = model2.get_backbone_feature(data)
+            multi_level_feats = (multi_level_feats1 + multi_level_feats2) / 2
+            multi_level_position_embeddings = (multi_level_position_embeddings1 + multi_level_position_embeddings2) / 2
+            query_embeds = (query_embeds1 + query_embeds2) / 2
+            outputs = model2.forward_with_feature(multi_level_feats, multi_level_masks, multi_level_position_embeddings, query_embeds, attn_mask)[0]['instances']
+            # outputs3 = model3(data)[0]['instances']
         # print("outputs", outputs)
         if torch.cuda.is_available():
             torch.cuda.synchronize()
-        targets = outputs1.pred_classes.cpu().tolist()
-        boxes = [(i.cpu().detach().numpy() + j.cpu().detach().numpy() + k.cpu().detach().numpy()) / 3 for i, j, k in zip(outputs1.pred_boxes, outputs2.pred_boxes ,outputs3.pred_boxes)]
-        scores = [(i + j + k) / 3 for i, j, k in zip(outputs1.scores.cpu().tolist(), outputs2.scores.cpu().tolist(), outputs3.scores.cpu().tolist())]
+        targets = outputs.pred_classes.cpu().tolist()
+        boxes = outputs.pred_boxes.cpu().detach().numpy()
+        scores = outputs.scores.cpu().tolist()
 
         for target, box, score in zip(targets, boxes, scores):
             prediction_string += (str(target) + ' ' + str(score) + ' ' + str(box[0]) + ' '
@@ -325,28 +329,28 @@ def main(args):
     cfg.model.num_classes = 10
 
     if args.eval_only:
-        model = instantiate(cfg.model)
-        model.to(cfg.train.device)
-        model = create_ddp_model(model)
-        DetectionCheckpointer(model).resume_or_load(cfg.train.init_checkpoint, resume=False)
-        do_test(cfg, model)
+        # model = instantiate(cfg.model)
+        # model.to(cfg.train.device)
+        # model = create_ddp_model(model)
+        # DetectionCheckpointer(model).resume_or_load(cfg.train.init_checkpoint, resume=False)
+        # do_test(cfg, model)
         ###########################################################
-        # model1 = instantiate(cfg.model)
-        # model1.to(cfg.train.device)
-        # model1 = create_ddp_model(model1)
-        # DetectionCheckpointer(model1).resume_or_load(cfg.train.init_checkpoint1, resume=False)
-        #
-        # model2 = instantiate(cfg.model)
-        # model2.to(cfg.train.device)
-        # model2 = create_ddp_model(model2)
-        # DetectionCheckpointer(model2).resume_or_load(cfg.train.init_checkpoint1, resume=False)
+        model1 = instantiate(cfg.model)
+        model1.to(cfg.train.device)
+        model1 = create_ddp_model(model1)
+        DetectionCheckpointer(model1).resume_or_load(cfg.train.init_checkpoint1, resume=False)
+
+        model2 = instantiate(cfg.model)
+        model2.to(cfg.train.device)
+        model2 = create_ddp_model(model2)
+        DetectionCheckpointer(model2).resume_or_load(cfg.train.init_checkpoint2, resume=False)
         #
         # model3 = instantiate(cfg.model)
         # model3.to(cfg.train.device)
         # model3 = create_ddp_model(model3)
         # DetectionCheckpointer(model3).resume_or_load(cfg.train.init_checkpoint3, resume=False)
         #
-        # do_test_ensemble(cfg, model1, model2, model3)
+        do_test_ensemble(cfg, model1, model2)
     else:
         do_train(args, cfg)
 
